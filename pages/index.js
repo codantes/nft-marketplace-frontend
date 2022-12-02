@@ -4,22 +4,14 @@ import { useState, useEffect } from 'react'
 import { Contract, ethers } from "ethers";
 import {contractAddress, abi} from "../constants.js";
 import dynamic from 'next/dynamic'
+import { useEthers } from '@usedapp/core';
+import Header from '../components/Header'
 
-const Header = dynamic(
-  () => import('../components/Header'),
-  { ssr: false }
-)
 export default function Home(){
-  const [account, setAccount] = useState(null)
-  const [isWalletInstalled, setWalletInstalled] = useState(false)
+
   const [NFTcontract, setNFTContract] = useState(null)
   const [isMinting, setIsMinting] = useState(false)
-
-  useEffect(()=> {
-    if(window.ethereum){
-      setWalletInstalled(true)
-    }
-  }, [] )
+  const { account, activateBrowserWallet, deactivate, chainId } = useEthers()
 
   useEffect(()=>{
     const initNFTContract = () => {
@@ -69,7 +61,7 @@ export default function Home(){
 
       <Header/>
       <h1 className='text-center text-2xl'>Buy cubes nft</h1>
-      <h4 className='text-center text-sm'>**contract deployed on rinkeby network</h4>
+      <h4 className='text-center text-sm'>**contract deployed on goerli network</h4>
       <section className='flex flex-col md:flex-row w-9/12 md:w-11/12 mx-auto justify-evenly'>
         {
           data.map((nft, index) => { 
